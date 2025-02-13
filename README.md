@@ -54,4 +54,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Support
 
-For support, please contact support@kurncy.com or join our [Discord community](https://discord.gg/pRPWECg9). 
+For support, please contact support@kurncy.com or join our [Discord community](https://discord.gg/pRPWECg9) and [Telegram](https://t.me/KURNCY_Official)

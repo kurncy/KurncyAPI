@@ -1,0 +1,62 @@
+Kurncy API
+Copyright (c) 2024 Kurncy
+
+This product includes software developed by:
+The Kurncy Team (https://kurncy.com)
+
+-------------------------------------------------------------------------------
+
+This software uses the following open source packages:
+
+Kaspa Integration:
+- kaspa-rpc-client (https://github.com/kaspanet)
+  Used for Kaspa blockchain interaction
+  Copyright (c) Kaspa developers
+  Licensed under the ISC License
+
+WASM Integration:
+- kaspa-WASM (https://github.com/aspectron/kaspa-ng)
+  Kaspa p2p desktop node, wallet and BlockDAG visualizer
+  Copyright (c) Aspectron Inc.
+  Licensed under the MIT License
+
+Node.js Dependencies:
+- express (https://expressjs.com)
+  Web framework for Node.js
+  Copyright (c) 2009-2024 TJ Holowaychuk & contributors
+  Licensed under the MIT License
+
+Security:
+- helmet (https://helmetjs.github.io)
+  Security middleware for Express
+  Copyright (c) 2012-2024 Evan Hahn, Adam Baldwin
+  Licensed under the MIT License
+
+- jsonwebtoken (https://github.com/auth0/node-jsonwebtoken)
+  JWT implementation
+  Copyright (c) 2015 Auth0, Inc.
+  Licensed under the MIT License
+
+Utility Libraries:
+- cors (https://github.com/expressjs/cors)
+  CORS middleware
+  Copyright (c) 2013-2024 Express Foundation
+  Licensed under the MIT License
+
+- morgan (https://github.com/expressjs/morgan)
+  HTTP request logger
+  Copyright (c) 2014-2024 Express Foundation
+  Licensed under the MIT License
+
+-------------------------------------------------------------------------------
+
+For full license texts, please refer to the respective project repositories.
+
+The Kurncy API is built on top of the Kaspa blockchain technology. Special thanks to:
+- The Kaspa development team
+- Aspect for WASM and Rust implementations
+- Coinchimp for KRC-20 examples
+- All contributors to the dependencies listed above
+
+For updates and more information about Kurncy:
+Website: https://kurncy.com

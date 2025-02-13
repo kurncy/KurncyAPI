@@ -1,47 +1,32 @@
-# Kurncy API V1
+# Kurncy Solution - API
 
-Kurncy API is a secure and scalable backend service for managing Kaspa blockchain transactions, KRC-20 tokens, and wallet operations.
+## Core Values & Vision
 
-## Features
+KurncyAPI serves as a bridge between Kaspa's high-performance blockchain and modern applications, embodying these core principles:
 
-### Wallet Management
-- ✨ Create new wallets with mnemonic phrases
-- 🔐 Import existing wallets via private key or mnemonic
-- 💼 Multi-wallet support
-- 📊 Real-time balance tracking
+### 1. Security First
+- End-to-end encryption for private key management
+- PIN-based encryption for wallet security
+- Firebase App Check integration for client verification
+- Secure API endpoints with rate limiting and CORS protection
 
-### Kaspa Transactions
-- 💸 Send and receive KAS
-- ⚡ Fast transaction processing
-- 💰 UTXO optimization
-- 📈 Dynamic fee estimation
+### 2. Kaspa Integration Excellence
+- Native support for Kaspa's transactions
+- Optimized for Kaspa's BlockDAG architecture
+- Real-time balance tracking
+- Full support for Kaspa's high throughput capabilities
 
-### KRC-20 Token Support
-- 🪙 Mint KRC-20 tokens
-- 💱 Token transfers with fee estimation
+### 3. KRC-20 Innovation
+- Complete KRC-20 token transaction 
+- Efficient token minting and transfer operations
+- Advanced fee estimation for token transactions
 
-## Security
-
-The API implements several security measures:
-
-1. **Firebase App Check**
-   - Prevents unauthorized API access
-   - Validates client authenticity
-
-2. **Rate Limiting**
-   - Prevents abuse and DDoS attacks
-   - Configurable limits per IP/endpoint
-
-3. **SSL/TLS**
-   - Required for production deployment
-   - Secures all API communications
-
-4. **CORS Protection**
-   - Configurable allowed origins
-   - Prevents unauthorized cross-origin requests
-
+### 4. Developer-Centric Design
+- RESTful API architecture
+- Flexible integration options
+- Cross-platform compatibility
+  
 ## Contributing
-
 1. Fork the repository
 2. Create your feature branch
 3. Commit your changes

@@ -145,7 +145,7 @@ class KaspaKrc20MinterUtils {
         });
     }
 
-    async mintKrc20(fromPrivateKey, ticker, priorityFee = "0", iterations = 20) {
+    async mintKrc20(fromPrivateKey, ticker, priorityFee = "0", iterations = 5) {
         const startTime = Date.now();
         try {
             await this.initialize();
@@ -153,7 +153,7 @@ class KaspaKrc20MinterUtils {
             const timeout = 30000;
 
             // Ensure minimum iterations
-            const numIterations = Math.max(20, Number(iterations));
+            const numIterations = Math.max(5, Number(iterations));
             console.log(`Will perform ${numIterations} mint iterations`);
 
             // Calculate commit amount based on iterations
@@ -203,31 +203,14 @@ class KaspaKrc20MinterUtils {
             entries.forEach((entry, i) => {
                 console.log(`UTXO ${i}:`, {
                     index: entry.outpoint.index,
-                    amount: entry.amount.toString(),
+                    amount: this.convertSompiToKas(entry.amount.toString()),
                     transactionId: entry.outpoint.transactionId
                 });
             });
 
-            // Log initial UTXOs
-            this.logTransaction('initial_utxos', {
-                utxos: entries.map(entry => ({
-                    index: entry.outpoint.index,
-                    amount: entry.amount.toString(),
-                    transactionId: entry.outpoint.transactionId
-                }))
-            });
-
-            const sourceUtxo = entries[0];
-            this.logTransaction('selected_utxo', {
-                index: sourceUtxo.outpoint.index,
-                amount: sourceUtxo.amount.toString(),
-                transactionId: sourceUtxo.outpoint.transactionId
-            });
-
-            // Estimate transaction fee for one transaction
-            console.log('Estimating transaction fee...');
+            // Calculate required amount including fees
             const initialEstimateGenerator = new Generator({
-                priorityEntries: [sourceUtxo],
+                priorityEntries: [entries[0]],
                 entries: [],
                 outputs: [],
                 changeAddress: address.toString(),
@@ -242,28 +225,36 @@ class KaspaKrc20MinterUtils {
             const totalFees = initialTransactionFee * BigInt(numIterations);
             console.log('Total fees for all iterations:', totalFees.toString());
 
-            // Add fees to commit amount
+            // Calculate total required amount
             const commitAmountInSompi = kaspaToSompi(commitAmount);
             const additionalAmount = kaspaToSompi("0.0001"); // Add 0.0001 KAS
-            const totalCommitAmount = BigInt(commitAmountInSompi) + totalFees + BigInt(additionalAmount);
-            console.log('Total commit amount including fees and additional amount:', totalCommitAmount.toString());
+            const totalRequiredAmount = BigInt(commitAmountInSompi) + totalFees + BigInt(additionalAmount);
+            console.log('Total required amount:', this.convertSompiToKas(totalRequiredAmount.toString()), 'KAS');
 
-            this.logTransaction('fee_estimation', {
-                estimatedFee: initialTransactionFee.toString(),
-                totalFees: totalFees.toString(),
-                commitAmount: commitAmountInSompi,
-                totalCommitAmount: totalCommitAmount.toString(),
-                estimationDetails: {
-                    mass: initialEstimation.mass ? initialEstimation.mass.toString() : "0",
-                    size: initialEstimation.size || 0,
-                    iterations: numIterations,
-                    sourceUtxo: {
-                        index: sourceUtxo.outpoint.index,
-                        amount: sourceUtxo.amount.toString(),
-                        transactionId: sourceUtxo.outpoint.transactionId
-                    }
+            // Find a UTXO with sufficient funds
+            let sourceUtxo = null;
+            for (const entry of entries) {
+                if (BigInt(entry.amount) >= totalRequiredAmount) {
+                    sourceUtxo = entry;
+                    console.log('Found suitable UTXO with amount:', this.convertSompiToKas(entry.amount.toString()), 'KAS');
+                    break;
                 }
+            }
+
+            if (!sourceUtxo) {
+                throw new Error(`No single UTXO found with sufficient funds. Required: ${this.convertSompiToKas(totalRequiredAmount.toString())} KAS`);
+            }
+
+            this.logTransaction('selected_utxo', {
+                index: sourceUtxo.outpoint.index,
+                amount: sourceUtxo.amount.toString(),
+                transactionId: sourceUtxo.outpoint.transactionId,
+                requiredAmount: totalRequiredAmount.toString()
             });
+
+            // Remove the duplicate fee estimation since we already did it above
+            const totalCommitAmount = totalRequiredAmount;
+            console.log('Total commit amount including fees and additional amount:', this.convertSompiToKas(totalCommitAmount.toString()), 'KAS');
 
             // Initial commit transaction
             let initialCommitHash;  // Declare outside try block
